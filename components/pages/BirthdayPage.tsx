@@ -1,6 +1,16 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useState } from "react";
+
+const lineVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.7 },
+  }),
+};
 
 export default function BirthdayPage({
   lines,
@@ -19,14 +29,18 @@ export default function BirthdayPage({
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-5 px-6">
       {lines.slice(0, index + 1).map((line, i) => (
-        <p key={i} className="font-serif text-xl text-gold">
+        <motion.p
+          key={i}
+          custom={i}
+          initial="hidden"
+          animate="visible"
+          variants={lineVariants}
+          className="heading-serif text-xl text-gold"
+        >
           {line}
-        </p>
+        </motion.p>
       ))}
-      <button
-        onClick={next}
-        className="mt-6 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-xs uppercase tracking-[0.2em] text-white/70"
-      >
+      <button onClick={next} className="btn-soft mt-6">
         Continue
       </button>
     </div>

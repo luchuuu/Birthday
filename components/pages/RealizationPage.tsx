@@ -1,6 +1,16 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useState } from "react";
+
+const lineVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.6 },
+  }),
+};
 
 export default function RealizationPage({
   lines,
@@ -19,14 +29,18 @@ export default function RealizationPage({
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-6 px-6">
       {lines.slice(0, index + 1).map((line, i) => (
-        <p key={i} className="font-serif text-lg text-white/90">
+        <motion.p
+          key={i}
+          custom={i}
+          initial="hidden"
+          animate="visible"
+          variants={lineVariants}
+          className="heading-serif text-lg text-white/90"
+        >
           {line}
-        </p>
+        </motion.p>
       ))}
-      <button
-        onClick={next}
-        className="mt-6 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-xs uppercase tracking-[0.2em] text-white/70"
-      >
+      <button onClick={next} className="btn-soft mt-6">
         Continue
       </button>
     </div>
