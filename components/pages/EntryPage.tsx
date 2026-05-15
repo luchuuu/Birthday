@@ -1,0 +1,37 @@
+"use client";
+
+import { useState } from "react";
+
+export default function EntryPage({
+  lines,
+  onDone,
+}: {
+  lines: string[];
+  onDone: () => void;
+}) {
+  const [index, setIndex] = useState(0);
+
+  const next = () => {
+    if (index < lines.length - 1) setIndex(index + 1);
+    else onDone();
+  };
+
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-6 px-6">
+      {lines.slice(0, index + 1).map((line, i) => (
+        <p
+          key={i}
+          className="font-serif text-lg text-white/90"
+        >
+          {line}
+        </p>
+      ))}
+      <button
+        onClick={next}
+        className="mt-6 rounded-full border border-white/20 bg-white/10 px-6 py-3 text-sm uppercase tracking-[0.2em] text-white/80"
+      >
+        Tap to continue
+      </button>
+    </div>
+  );
+}
