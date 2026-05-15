@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Particles from "@/components/ui/Particles";
 import MuteButton from "@/components/ui/MuteButton";
@@ -29,6 +29,7 @@ import GiftBoxPage from "@/components/pages/GiftBoxPage";
 import CakePage from "@/components/pages/CakePage";
 import FinalMessagePage from "@/components/pages/FinalMessagePage";
 import EndScreen from "@/components/pages/EndScreen";
+import { fadeMusic, initAudio, playSfx, setMuted, startMusic } from "@/lib/audio";
 
 const pages = [
   "preloader",
@@ -54,12 +55,35 @@ const transition = {
   exit: { opacity: 0, y: -20, transition: { duration: 0.6 } },
 };
 
+const volumeMap: Record<PageKey, number> = {
+  preloader: 0.0,
+  entry: 0.25,
+  realization: 0.3,
+  wordspace: 0.35,
+  flashlight: 0.28,
+  emotional: 0.4,
+  error: 0.2,
+  core: 0.42,
+  birthday: 0.5,
+  gift: 0.45,
+  cake: 0.4,
+  final: 0.28,
+  end: 0.0,
+};
+
 export default function Flow() {
   const [pageIndex, setPageIndex] = usePersistentState<number>(
     "birthday:pageIndex",
     0
   );
-  const [muted, setMuted] = usePersistentState<boolean>("birthday:muted", true);
+  const [muted, setMutedState] = usePersistentState<boolean>(
+    "birthday:muted",
+    true
+  );
+  const [audioStarted, setAudioStarted] = usePersistentState<boolean>(
+    "birthday:audioStarted",
+    false
+  );
 
   const [openedWords, setOpenedWords] = usePersistentState<string[]>(
     "birthday:openedWords",
@@ -79,6 +103,7 @@ export default function Flow() {
 
   const next = () => {
     if (!canGoNext) return;
+    playSfx("tap");
     setPageIndex((prev) => Math.min(prev + 1, pages.length - 1));
   };
 
@@ -86,10 +111,32 @@ export default function Flow() {
     if (pageIndex < 0) setPageIndex(0);
   }, [pageIndex, setPageIndex]);
 
+  useEffect(() => {
+    initAudio();
+    setMuted(muted);
+  }, [muted]);
+
+  useEffect(() => {
+    if (!audioStarted) return;
+    startMusic();
+    fadeMusic(volumeMap[current] ?? 0.3, 1200);
+  }, [audioStarted, current]);
+
+  useEffect(() => {
+    const handleStart = () => {
+      if (!audioStarted) {
+        setAudioStarted(true);
+        startMusic();
+      }
+    };
+    window.addEventListener("pointerdown", handleStart, { once: true });
+    return () => window.removeEventListener("pointerdown", handleStart);
+  }, [audioStarted, setAudioStarted]);
+
   return (
     <div className="relative h-full w-full overflow-hidden text-center">
       <Particles mode={current} />
-      <MuteButton muted={muted} setMuted={setMuted} />
+      <MuteButton muted={muted} setMuted={setMutedState} />
 
       <AnimatePresence mode="wait">
         <motion.div key={current} {...transition} className="h-full w-full">
