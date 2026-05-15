@@ -120,7 +120,7 @@ export const birthdayLines = [
   "The universe rotated perfectly to create this day.",
   "And I’m really glad it did.",
   "Happy Birthday",
-  "[Her Name]",
+  "Sayra Khatun",
 ];
 
 export const finalLines = [
@@ -129,6 +129,6 @@ export const finalLines = [
   "You changed mine quietly.",
   "And somehow that mattered even more.",
   "Happy Birthday.",
-  "[Her Name]",
+  "Sayra Khatun",
   "Thank you for existing.",
 ];
