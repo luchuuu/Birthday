@@ -13,18 +13,18 @@ export function initAudio() {
   initialized = true;
 
   music = new Howl({
-    src: ["/score.mp3"],
+    src: ["/audio/Background.mp3"],
     loop: true,
     volume: 0.35,
     html5: true,
   });
 
-  sfx.tap = new Howl({ src: ["/tap.mp3"], volume: 0.25 });
-  sfx.glitch = new Howl({ src: ["/glitch.mp3"], volume: 0.3 });
-  sfx.unlock = new Howl({ src: ["/unlock.mp3"], volume: 0.35 });
-  sfx.unwrap = new Howl({ src: ["/paper.mp3"], volume: 0.35 });
-  sfx.sparkle = new Howl({ src: ["/sparkle.mp3"], volume: 0.35 });
-  sfx.candle = new Howl({ src: ["/candle.mp3"], volume: 0.35 });
+  sfx.tap = new Howl({ src: ["/audio/tap.mp3"], volume: 0.25 });
+  sfx.glitch = new Howl({ src: ["/audio/glitch.mp3"], volume: 0.3 });
+  sfx.unlock = new Howl({ src: ["/audio/unlock.mp3"], volume: 0.35 });
+  sfx.unwrap = new Howl({ src: ["/audio/paper.mp3"], volume: 0.35 });
+  sfx.sparkle = new Howl({ src: ["/audio/sparkle.mp3"], volume: 0.35 });
+  sfx.candle = new Howl({ src: ["/audio/candle.mp3"], volume: 0.35 });
 }
 
 export function startMusic() {
